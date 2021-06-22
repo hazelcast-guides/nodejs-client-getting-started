@@ -76,7 +76,7 @@ npm init
 
 Install Hazelcast Node.js client's latest version:
 
-[source]
+[source,bash]
 ----
 npm install --save hazelcast-client
 ----
