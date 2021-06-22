@@ -4,8 +4,8 @@ This is the base template for Hazelcast integration module guides.
 You can clone this repository, work on it and create your guide, and then push to a new repository.
 ////
 
-:github-address: [github-repo-address-of-your-guide]
-
+:github-address: https://github.com/hazelcast-guides/nodejs-client-getting-started
+:source-highlighter: rouge
 :templates-url: https://raw.githubusercontent.com/hazelcast-guides/adoc-templates/master
 
 // Use this relative url if you are going to publish the guide on the guides site.
@@ -15,32 +15,252 @@ You can clone this repository, work on it and create your guide, and then push t
 //
 // :templates-url: templates:ROOT:page$/
 
-= Title
+= Getting Started with Hazelcast Node.js Client
 
 // Content entered directly below the header but before the first section heading is called the preamble.
 
-include::{templates-url}/link-to-repo.adoc[]
+This guide will get you started with Hazelcast Node.js Client. You can see the whole project https://github.com/hazelcast-guides/nodejs-client-getting-started[here.]
 
-== What You’ll Learn
+== What You'll Learn
 
 // Define the problem and tell reader what he/she will learn from this guide.
+
+In this guide, you will learn:
+
+1. Installing Hazelcast and starting a Hazelcast member
+2. Installing Hazelcast Node.js client
+3. Starting Node.js client
+4. Accessing map with Node.js client
+5. Adding an entry listener to the map
+
 
 == Prerequisites
 
 // Define the prerequisites for the guide.
 
-////
-Write the steps in your guide here by making each step a different section
-////
+* ~5-10 minutes
+* A text editor or IDE
+* Docker
+* Node.js 10.4+
+
+
+== Starting Hazelcast
+
+We will use the 4.2 version of Hazelcast for this guide. 
+
+In this guide, we will use Docker for simplicity. You can find the different installation methods https://docs.hazelcast.com/imdg/4.2/installation/installing-upgrading.html[here.]
+
+[source]
+----
+docker run -p 5701:5701 hazelcast/hazelcast:4.2
+----
+
+This will start a new Hazelcast member at port 5701. Now, we have a Hazelcast cluster with just one member. 
+
+== Installing Hazelcast Node.js Client
+
+Create a new folder and navigate to it:
+
+[source]
+----
+mkdir nodejs-client-getting-started
+cd nodejs-client-getting-started
+----
+
+Initialize a new npm package:
+
+[source]
+----
+npm init
+----
+
+Install Hazelcast Node.js client's latest version:
+
+[source]
+----
+npm install --save hazelcast-client
+----
+
+Create a JavaScript file named “index.js” and put the following code inside it:
+
+[source,javascript]
+----
+const { Client } = require('hazelcast-client');
+(async () => {
+    const client = await Client.newHazelcastClient();
+})().catch(err => {
+    console.log(`An error occured: ${err}`);
+});
+----
+
+To run this Node.js script, use the following command:
+
+[source]
+----
+node index.js
+----
+
+The majority of the client methods return promises, so we used the https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function[async/await] syntax here,
+but you can use the regular https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then[then] / https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch[catch]
+syntax, too.
+
+
+The following line creates and starts a new Hazelcast client with the default configuration.
+
+[source,javascript]
+----
+const client = await Client.newHazelcastClient();
+----
+
+
+The client automatically connects to the Hazelcast member available on the local machine.
+
+
+== Using Map
+
+A Hazelcast map is a distributed key-value store, similar to JavaScript Map class or plain objects. You can store key-value pairs in a map.
+In the following example, we will work with map entries where the keys are session ids and the values are emails.
+
+[source,javascript]
+----
+const { Client } = require('hazelcast-client');
+
+(async () => {
+    const client = await Client.newHazelcastClient();
+    const map = await client.getMap('someMap');
+    await map.set('sid12345', 'example1@email.com');
+    await map.set('sid12346', 'example2@email.com');
+    console.log(await map.get('sid12345'));
+    console.log(await map.get('sid12346'));
+})().catch(err => {
+    console.log(`An error occured: ${err}`);
+});
+----
+
+The output of this snippet is given below: 
+
+[source]
+----
+example1@email.com
+example2@email.com
+----
+
+The following line returns a map proxy object for the 'someMap' map:
+
+[source,javascript]
+----
+const map = await client.getMap('someMap');
+----
+
+If the map called “someMap” does not exist in the Hazelcast cluster, it will be automatically created. All the clients that connect to the same cluster will have access to the same map.
+
+With these two lines, the Node.js client adds data to the map. The first parameter is the key of the entry, the second one is the value:
+
+[source,javascript]
+----
+ await map.set('sid12345', 'example1@email.com');
+ await map.set('sid12346', 'example2@email.com');
+----
+
+Finally, we get the values we added to the map with the get method:
+
+[source,javascript]
+----
+console.log(await map.get('sid12345'));
+console.log(await map.get('sid12346'));
+----
+
+== Adding a Listener to the Map
+
+You can add an entry listener using the “addEntryListener” method available on map proxy object.
+This will allow you to listen to certain events that happen in the map across the cluster.
+
+The first argument to the “addEntryListener” method is an object that is used to define listeners.
+In this example, we registered listeners for the “added”, “removed" and “updated” events.
+
+The second argument in the addEntryListener method is key. It stands for the key to listen for.
+When it is set to “undefined” (or omitted, which is the same), the listener will be fired for all entries in the map.
+In this example, we will set it to “undefined” to listen to events from all keys.
+
+The third argument in the addEntryListener method is includeValue. It is a boolean parameter, and if it is true, the entry event contains the entry value.
+In this example, it will be true.
+
+[source,javascript]
+----
+const { Client } = require('hazelcast-client');
+
+(async () => {
+    const client = await Client.newHazelcastClient();
+    const map = await client.getMap('someMap');
+    map.addEntryListener({
+        added: (event) => {
+            console.log(`Entry added. Key: ${event.key} Value: ${event.value}`)
+        },
+        removed: (event) => {
+            console.log(`Entry removed. Key: ${event.key}`);
+        },
+        updated: (event) => {
+            console.log(`Entry updated. Key: ${event.key} Value change: ${event.oldValue} -> ${event.value}`)
+        },
+    }, undefined, true);
+
+    await map.clear();
+
+    await map.set('sid12345', 'example1@email.com');
+    await map.set('sid12346', 'example2@email.com');
+    
+    let email1 = await map.get('sid12345');
+    let email2 = await map.get('sid12346');
+
+    console.log(`Email1: ${email1}`);
+    console.log(`Email2: ${email2}`);
+
+    await map.delete('sid12345');
+    await map.set('sid12346', 'example1@email.com');
+
+    email1 = await map.get('sid12345');
+    email2 = await map.get('sid12346');
+
+    console.log(`Email1: ${email1}`);
+    console.log(`Email2: ${email2}`);
+})().catch(err => {
+    console.log(`An error occured: ${err}`);
+});
+----
+
+First, the map is cleared to fire events even if there are some entries in the map. Then, two session entries are added, and they are logged.
+After that, we remove one of the entries and update the other one. Then, we log the session entries again.
+
+The output is as follows:
+
+[source]
+----
+Entry added. Key: sid12345 Value: example1@email.com
+Entry added. Key: sid12346 Value: example2@email.com
+Email1: example1@email.com
+Email2: example2@email.com
+Entry removed. Key: sid12345
+Entry updated. Key: sid12346 Value change: example2@email.com -> example1@email.com
+Email1: null
+Email2: example1@email.com
+----
+
+
+The value of the first entry becomes “null” since it is removed.
 
 == Summary
 
 // Provide a quick summary
+
+In this guide, you learned how to get started with Hazelcast Node.js Client using a distributed map.
 
 == See Also
 
 // Add some links to resources, such as other related guides.
 // Use relative links used on the home page (see https://raw.githubusercontent.com/hazelcast-guides/guides-site/master/home/modules/ROOT/pages/index.adoc)
 
-- xref:hazelcast-embedded-springboot:ROOT:index.adoc[Hazelcast in SpringBoot]
-- xref:hazelcast-quarkus:ROOT:index.adoc[Hazelcast Client for Quarkus] 
+There are a lot of things that you can do with the Node.js client. For more, such as how you can query a map with predicates and SQL,
+check out our https://github.com/hazelcast/hazelcast-nodejs-client[Node.js client repository.]
+
+If you have any questions, suggestions, or feedback please do not hesitate to reach out to us via https://slack.hazelcast.com/[Hazelcast Community Slack.]
+Also, please take a look at https://github.com/hazelcast/hazelcast-nodejs-client/issues[the issue list] if you would like to contribute to the client.
