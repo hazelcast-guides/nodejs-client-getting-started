@@ -27,11 +27,11 @@ This guide will get you started with Hazelcast Node.js Client. You can see the w
 
 In this guide, you will learn:
 
-1. Starting a Hazelcast member
-2. Installing Hazelcast Node.js client
-3. Starting Node.js client
+1. Starting a Hazelcast Member
+2. Installing Hazelcast Node.js Client
+3. Starting Node.js Client
 4. Using Map
-5. Adding a listener to the map
+5. Adding a Listener to the map
 
 
 == Prerequisites
@@ -44,7 +44,7 @@ In this guide, you will learn:
 * Node.js 10.4+
 
 
-== Starting Hazelcast
+== Starting a Hazelcast Member
 
 We will use the 4.2 version of Hazelcast for this guide. 
 
