@@ -30,8 +30,8 @@ In this guide, you will learn:
 1. Starting a Hazelcast member
 2. Installing Hazelcast Node.js client
 3. Starting Node.js client
-4. Accessing map with Node.js client
-5. Adding an entry listener to the map
+4. Using Map
+5. Adding a listener to the map
 
 
 == Prerequisites
