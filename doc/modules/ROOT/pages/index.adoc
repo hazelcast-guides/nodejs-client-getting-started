@@ -27,7 +27,7 @@ This guide will get you started with Hazelcast Node.js Client. You can see the w
 
 In this guide, you will learn:
 
-1. Installing Hazelcast and starting a Hazelcast member
+1. Starting a Hazelcast member
 2. Installing Hazelcast Node.js client
 3. Starting Node.js client
 4. Accessing map with Node.js client
@@ -80,6 +80,8 @@ Install Hazelcast Node.js client's latest version:
 ----
 npm install --save hazelcast-client
 ----
+
+== Starting Node.js Client
 
 Create a JavaScript file named “index.js” and put the following code inside it:
 
