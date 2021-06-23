@@ -61,7 +61,7 @@ This will start a new Hazelcast member at port 5701. Now, we have a Hazelcast cl
 
 Create a new folder and navigate to it:
 
-[source,bash]
+[source]
 ----
 mkdir nodejs-client-getting-started
 cd nodejs-client-getting-started
@@ -141,7 +141,7 @@ const { Client } = require('hazelcast-client');
 
 The output of this snippet is given below: 
 
-[source]
+[source,bash]
 ----
 example1@email.com
 example2@email.com
@@ -235,7 +235,7 @@ After that, we remove one of the entries and update the other one. Then, we log 
 
 The output is as follows:
 
-[source]
+[source,bash]
 ----
 Entry added. Key: sid12345 Value: example1@email.com
 Entry added. Key: sid12346 Value: example2@email.com
