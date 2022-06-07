@@ -1,4 +1,0 @@
-name: nodejs-client-getting-started    # Use repository name. It will be the endpoint for the guide
-title: Nodejs Client Getting Started  # A brief module title. This will not show up on the website.
-version: master
-
