@@ -337,12 +337,12 @@ const sprintf= require('sprintf-js').sprintf;
 (async () => {
 
     const client = await Client.newHazelcastClient({
-        clusterName: 'pr-y0ql3ue6',
+        clusterName: '<YOUR_CLUSTER_ID>',
 
         // Connection details for cluster
         network: {
             hazelcastCloud: {
-                discoveryToken: 'SnyJZowGr6chsjHRAxRz0S3bAwpDP4DxnhXbppB78ZUcEi3ruq',
+                discoveryToken: '<YOUR_DISCOVERY_TOKEN>',
             },
 
             ssl: {
@@ -351,7 +351,7 @@ const sprintf= require('sprintf-js').sprintf;
                     ca: [fs.readFileSync(path.resolve(path.join(__dirname, 'ca.pem')))],
                     cert: [fs.readFileSync(path.resolve(path.join(__dirname, 'cert.pem')))],
                     key: [fs.readFileSync(path.resolve(path.join(__dirname, 'key.pem')))],
-                    passphrase: '620f52683af',
+                    passphrase: '<YOUR_CERTIFICATE_PASSWORD>',
                     checkServerIdentity: () => null
                 },
             },
@@ -466,12 +466,12 @@ const sprintf= require('sprintf-js').sprintf;
 (async () => {
 
     const client = await Client.newHazelcastClient({
-        clusterName: 'pr-y0ql3ue6',
+        clusterName: '<YOUR_CLUSTER_ID>',
 
         // Connection details for cluster
         network: {
             hazelcastCloud: {
-                discoveryToken: 'SnyJZowGr6chsjHRAxRz0S3bAwpDP4DxnhXbppB78ZUcEi3ruq',
+                discoveryToken: '<YOUR_DISCOVERY_TOKEN>',
             },
 
             ssl: {
@@ -480,7 +480,7 @@ const sprintf= require('sprintf-js').sprintf;
                     ca: [fs.readFileSync(path.resolve(path.join(__dirname, 'ca.pem')))],
                     cert: [fs.readFileSync(path.resolve(path.join(__dirname, 'cert.pem')))],
                     key: [fs.readFileSync(path.resolve(path.join(__dirname, 'key.pem')))],
-                    passphrase: '620f52683af',
+                    passphrase: '<YOUR_CERTIFICATE_PASSWORD>',
                     checkServerIdentity: () => null
                 },
             },
