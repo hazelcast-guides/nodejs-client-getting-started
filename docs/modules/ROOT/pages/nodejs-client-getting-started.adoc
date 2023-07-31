@@ -559,7 +559,7 @@ The value of the first entry becomes "null" since it is removed.
 
 == Summary
 
-In this tutorial, you learned how to get started with Hazelcast Node.js Client, connect to a Viridian instance and put data into a distributed map.
+In this tutorial, you learned how to get started with the Hazelcast Node.js Client, connect to a Viridian instance and put data into a distributed map.
 
 == See Also
 
