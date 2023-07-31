@@ -1,8 +1,9 @@
 = Getting Started with the Hazelcast Node.js Client
 :page-layout: tutorial
 :page-product: platform
-:page-categories: Caching, Getting Started
+:page-categories: Get Started
 :page-lang: node
+:page-enterprise:
 :page-est-time: 5-10 mins
 :description: This tutorial will get you started with the Hazelcast Node.js client and manipulate a map.
 
